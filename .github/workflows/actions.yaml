@@ -26,20 +26,24 @@ jobs:
             cache: maven
         - name: Build with maven
           run: mvn clean verify
-          working-directory: complete
+        - name: publish the test results
+          uses: rasunkar/publishtestresults-action@v1.0.0-beta
+          with: 
+             files: "**/target/surefire-reports/**/*.xml"
+             comment_mode: always
         - name: check the build output
-          run: ls -R complete/target
+          run: ls -R target
         - name: Upload Test Reports
           if: always()
           uses: actions/upload-artifact@v4
           with:
              name: test-reportoutput
-             path: complete/target/surefire-reports/
+             path: target/surefire-reports/
         - name: upload Build Artifact
           uses: actions/upload-artifact@v4
           with: 
             name: app-artifact
-            path: complete/target/*.jar
+            path: target/*.jar
         - name: Perform Code-ql Analysis
           uses: github/codeql-action/analyze@v3
 
