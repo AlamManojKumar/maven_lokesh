@@ -1,0 +1,47 @@
+name: javaciwithmavenspringpetclinic
+on:
+  push:
+     branches: [ "feature"]
+  pull_request:
+     branches: [ "main" ]
+jobs:
+    build:
+      runs-on: ubuntu-latest
+      permissions:
+        security-events: write
+        contents: read
+        actions: read
+      steps:
+        - name: Checkoutcode
+          uses: actions/checkout@v4 
+        - name: Initialize CodeQL
+          uses: github/codeql-action/init@v3
+          with:
+            languages: java
+        - name: Set up JDK 17
+          uses: actions/setup-java@v4
+          with:
+            java-version: '17'
+            distribution: 'temurin'
+            cache: maven
+        - name: Build with maven
+          run: mvn clean verify
+          working-directory: complete
+        - name: check the build output
+          run: ls -R complete/target
+        - name: Upload Test Reports
+          if: always()
+          uses: actions/upload-artifact@v4
+          with:
+             name: test-reportoutput
+             path: complete/target/surefire-reports/
+        - name: upload Build Artifact
+          uses: actions/upload-artifact@v4
+          with: 
+            name: app-artifact
+            path: complete/target/*.jar
+        - name: Perform Code-ql Analysis
+          uses: github/codeql-action/analyze@v3
+
+
+
