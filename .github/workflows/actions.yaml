@@ -31,7 +31,7 @@ jobs:
         run: mvn clean verify
 
       - name: Publish test results
-        uses: rasunkar/publishtestresults-action@v1.0.0-beta
+        uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           files: "**/target/surefire-reports/**/*.xml"
           comment_mode: always
