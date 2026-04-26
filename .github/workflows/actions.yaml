@@ -26,11 +26,14 @@ jobs:
             cache: maven
         - name: Build with maven
           run: mvn clean verify
+<<<<<<< HEAD
         - name: publish the test results
           uses: rasunkar/publishtestresults-action@v1.0.0-beta
           with: 
              files: "**/target/surefire-reports/**/*.xml"
              comment_mode: always
+=======
+>>>>>>> c1f9fcc68a393c16354a74aedcce645f6c116493
         - name: check the build output
           run: ls -R target
         - name: Upload Test Reports
