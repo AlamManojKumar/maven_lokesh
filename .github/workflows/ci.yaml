@@ -15,6 +15,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: build spring application
+        run: |
+          docker image build -t alammanoj/spring-boot:1.0.0 .
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
