@@ -18,10 +18,10 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-           context: .
-           push: true
-           tags: alammanoj/spring-boot:1.0.0
-      
+          context: .
+          push: true
+          tags: alammanoj/spring-boot:1.0.0
+
 
 
 
