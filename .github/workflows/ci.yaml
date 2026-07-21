@@ -8,6 +8,11 @@ jobs:
     steps:
       - name: checkout repo branch
         uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: Setup DockerBuildX
         uses: docker/setup-buildx-action@v4
       - name: Login to Docker Hub
@@ -15,12 +20,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }} 
+      - name: build jar with maven
+        run: ./mvnw clean package -DskipTests        
       - name: find dockerfile
         run: find . -iname "dockerfile*"     
       - name: list files
         run: ls -la
       - name: build spring application
-        working-directory: ./spring-petclinic
         run: docker image build -t alammanoj/spring-boot:1.0.0 .
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
