@@ -1,0 +1,26 @@
+name: maven build workflow
+on:
+  workflow_dispatch:
+  push:
+    branches: '*'
+jobs:
+  maven_build:
+    runs-on: ubuntu-latest
+    if: ${{github.ref_name=='main'}}
+    steps:
+      - name: checkout repo branch
+        uses: actions/checkout@v4
+      - name: install java and maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build maven package
+        run:  mvn clean package
+      - name: upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: spring-jar
+          path: target/*.jar
+          retention-days: 90
